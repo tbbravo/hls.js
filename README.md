@@ -7,12 +7,12 @@ pc hls playback based on video.js
 npm install
 gulp build
 ```
-1. run
+2. run
 ```
 gulp server
 ```
-1.  watch demo
+3.  watch demo
 ```
 (http://localhost:3000/example.html)[http://localhost:3000/example.html]
 ```
-1. no 4 step :)
+4. no 4 step :)
