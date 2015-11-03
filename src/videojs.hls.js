@@ -1680,14 +1680,14 @@ resolveUrl = videojs.Hls.resolveUrl = function(basePath, path) {
       });
       return;
     }
-    match = (/^#EXT-X-DISCONTINUITY/).exec(line);
-    if (match) {
-      this.trigger('data', {
-        type: 'tag',
-        tagType: 'discontinuity'
-      });
-      return;
-    }
+    // match = (/^#EXT-X-DISCONTINUITY/).exec(line);
+    // if (match) {
+    //   this.trigger('data', {
+    //     type: 'tag',
+    //     tagType: 'discontinuity'
+    //   });
+    //   return;
+    // }
     match = (/^#EXT-X-KEY:?(.*)$/).exec(line);
     if (match) {
       event = {

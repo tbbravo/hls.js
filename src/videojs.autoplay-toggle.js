@@ -183,12 +183,23 @@
       player.pause();
     } else if (turnOn) {
       // we want this to autoplay
-
       player.me.autoplay = true;
+      var MSE = false;
 
-      setTimeout(function () {
-        player.tech_.play();
-      }, 0)
+      // setTimeout(function () {
+      //   player.tech_.play();
+      // }, 0)
+
+      var startPlay = function () {
+        console.log('startPlay');
+        var $playBtn = $('.vjs-big-play-button');
+        if ($('.vjs-big-play-button').is(':visible')) {
+          player.play();
+          setTimeout(startPlay, 100)
+        }
+      };
+
+      setTimeout(startPlay, 100);
     }
 
     // initialize autoplay toggle

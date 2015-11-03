@@ -16,6 +16,20 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./dist/'));
 
   gulp.src([
+    './src/videojs-ie8.js',
+    './src/video.js',
+    './src/videojs-resolution-switcher.js',
+    './src/videojs.persistvolume.js',
+    './src/videojs.autoplay-toggle.js',
+    './src/videojs.watermark.js',
+    './src/videojs.errors.js',
+    './src/videojs.hotkeys.js',
+    './src/videojs.monitor.js'
+  ])
+  .pipe(concat('video.js'))
+  .pipe(gulp.dest('./dist/'));
+
+  gulp.src([
       './src/hls/videojs-hls.js',
       './src/hls/xhr.js',
       './src/hls/stream.js',
@@ -30,17 +44,8 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./src/'));
 
   gulp.src([
-      './src/videojs-ie8.js',
-      './src/video.js',
       './src/videojs-contrib-media-sources.js',
-      './src/videojs.hls.js',
-      './src/videojs-resolution-switcher.js',
-      './src/videojs.persistvolume.js',
-      './src/videojs.autoplay-toggle.js',
-      './src/videojs.watermark.js',
-      './src/videojs.errors.js',
-      './src/videojs.hotkeys.js',
-      './src/videojs.monitor.js'
+      './src/videojs.hls.js'
     ])
     .pipe(concat('hls.js'))
     .pipe(gulp.dest('./dist/'));

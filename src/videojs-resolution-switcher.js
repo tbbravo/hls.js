@@ -188,7 +188,7 @@
   videoJsResolutionSwitcher = function(options) {
     if (options.namespace) {
         if (cookies.getItem(options.namespace)) {
-            options.default = cookies.getItem(options.namespace);
+            options['default'] = cookies.getItem(options['namespace']);
         }
     }
 
@@ -198,7 +198,7 @@
 
     this.settings = settings;
 
-    label.classList.add('vjs-resolution-button-label');
+    // label.classList.add('vjs-resolution-button-label');
 
     player.updateSrc = function(src){
       //Return current src if src is not given
@@ -269,7 +269,7 @@
      * @returns {Object} {res: string, sources: []}
      */
     function chooseSrc(groupedSrc, src){
-      var selectedRes = settings.default;
+      var selectedRes = settings['default'];
       var selectedLabel = '';
       if (selectedRes === 'high') {
         selectedRes = src[0].res;
