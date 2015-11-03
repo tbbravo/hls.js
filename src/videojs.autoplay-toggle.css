@@ -1,0 +1,23 @@
+.vjs-default-skin .vjs-autoplay-toggle-button {
+  width: 70px;
+  line-height: 15px;
+  right: 5px;
+  position: absolute;
+  right: 40px;
+}
+
+.vjs-default-skin .vjs-autoplay-toggle-button div .vjs-control-text {
+  font-family: inherit;
+  font-size: 10px;
+  position: relative;
+  text-transform: uppercase;
+  top: 4px;
+}
+
+.autoplay-toggle {
+  color: #777777;
+}
+
+.autoplay-toggle-active {
+  color: #cccccc;
+}

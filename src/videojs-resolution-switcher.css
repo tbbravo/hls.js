@@ -1,0 +1,74 @@
+.vjs-resolution-button {
+  color: #ccc;
+  font-family: VideoJS;
+  right: 10px;
+  position: absolute;
+  right: 110px;
+}
+
+.vjs-resolution-button .vjs-resolution-button-staticlabel:before {
+  content: '\f110';
+  font-size: 20px;
+  line-height: 40px;
+  color: #fff;
+}
+
+.vjs-resolution-button .vjs-resolution-button-label {
+    font-size: 1.2em;
+    line-height: 2.50em;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    box-sizing: inherit;
+}
+
+.vjs-resolution-button ul.vjs-menu-content {
+    left: -5px;
+    width: 60px;
+    color: #eee;
+    will-change: width,height;
+    position: absolute;
+    border-radius: 4px;
+    background: rgba(28,28,28,0.8);
+    -moz-transition: opacity .1s cubic-bezier(0.0,0.0,0.2,1);
+    -webkit-transition: opacity .1s cubic-bezier(0.0,0.0,0.2,1);
+    transition: opacity .1s cubic-bezier(0.0,0.0,0.2,1);
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    border-radius: 4px;
+    border-bottom: 1px solid #444;
+    line-height: 1.1;
+    font-size: 12px;
+}
+
+.vjs-resolution-button .vjs-menu {
+  left: 0;
+  bottom: 6px;
+}
+
+.vjs-resolution-button .vjs-menu.vjs-lock-showing {
+  display: none;
+}
+
+.vjs-resolution-button .vjs-menu li {
+  font-size: 12px;
+  padding: 4px 10px;
+  text-shadow: initial;
+}
+
+.vjs-resolution-button .vjs-menu li.vjs-selected {
+  background: initial;
+  color: #f12b24;
+}
+
+.vjs-menu-button .vjs-resolution-button-staticlabel {
+  transition: transform 0.2s;
+}
+
+.vjs-menu-button .vjs-resolution-button-staticlabel.active {
+  transform: rotate(60deg);
+}
