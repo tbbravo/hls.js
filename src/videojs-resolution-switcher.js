@@ -125,7 +125,7 @@
 
         $('.vjs-resolution-button .vjs-menu').hide();
 
-        var namespace = this.options_.plugins.videoJsResolutionSwitcher.namespace;
+        var namespace = 'hls-resolution-switch';
 
         if (namespace) {
             cookies.setItem(namespace, self.label.innerHTML);

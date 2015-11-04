@@ -9622,11 +9622,11 @@ var Player = (function (_Component) {
 
   Player.prototype.buffered = function buffered() {
     var buffered = this.techGet_('buffered');
-console.log('buffered', buffered.length);
+
     if (!buffered || !buffered.length) {
       buffered = _utilsTimeRangesJs.createTimeRange(0, 0);
     }
-console.log(buffered);
+
     return buffered;
   };
 

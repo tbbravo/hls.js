@@ -11598,11 +11598,11 @@ var Player = (function (_Component) {
 
   Player.prototype.buffered = function buffered() {
     var buffered = this.techGet_('buffered');
-console.log('buffered', buffered.length);
+
     if (!buffered || !buffered.length) {
       buffered = _utilsTimeRangesJs.createTimeRange(0, 0);
     }
-console.log(buffered);
+
     return buffered;
   };
 
@@ -21760,7 +21760,7 @@ module.exports = exports['default'];
 
         $('.vjs-resolution-button .vjs-menu').hide();
 
-        var namespace = this.options_.plugins.videoJsResolutionSwitcher.namespace;
+        var namespace = 'hls-resolution-switch';
 
         if (namespace) {
             cookies.setItem(namespace, self.label.innerHTML);
@@ -22955,6 +22955,7 @@ function monitor(options) {
     player.on('playing', function () {
         if (player.hasStarted()) {
             console.timeEnd('播放期间缓冲');
+            console.log('播放期间缓冲', new Date());
         }
         console.timeEnd('用户可感知的视频第一次加载时间');
         console.timeEnd('切换分辨率到播放的耗时');

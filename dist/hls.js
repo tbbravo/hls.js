@@ -1685,7 +1685,7 @@ videojs.Hls.prototype.findCurrentBuffered_ = function() {
           buffered
       }
 
-console.log(buffered.start(i), buffered.end(i), currentTime);
+// console.log(buffered.start(i), buffered.end(i), currentTime);
 
       if (i>0) {
         if (currentTime >= buffered.end(i-1) && currentTime < buffered.start(i) ) {
@@ -1773,28 +1773,39 @@ videojs.Hls.prototype.fillBuffer = function(seekToTime) {
     return;
   }
   // find the next segment to download
-  if (typeof seekToTime === 'number') {
-    mediaIndex = this.playlists.getMediaIndexForTime_(seekToTime);
-  } else if (currentBuffered && currentBuffered.length) {
-    mediaIndex = this.playlists.getMediaIndexForTime_(currentBuffered.end(0));
-    bufferedTime = Math.max(0, currentBuffered.end(0) - currentTime);
+  // if (typeof seekToTime === 'number') {
+  //   mediaIndex = this.playlists.getMediaIndexForTime_(seekToTime);
+  // } else if (currentBuffered && currentBuffered.length) {
+  //   mediaIndex = this.playlists.getMediaIndexForTime_(currentBuffered.end(0));
+  //   bufferedTime = Math.max(0, currentBuffered.end(0) - currentTime);
+  // } else {
+  //   mediaIndex = this.playlists.getMediaIndexForTime_(this.tech_.currentTime());
+  // }
+
+  /**
+   * hooke
+   * 不得已而为之
+   */
+  // if (this.lastMediaIndex !== undefined) {
+  //   if (this.lastMediaIndex >= mediaIndex) {
+  //     mediaIndex = this.lastMediaIndex + 1;
+  //
+  //     if (mediaIndex + 1 > this.playlists.media().segments.length) {
+  //       mediaIndex = this.playlists.media().segments.length - 1;
+  //     }
+  //
+  //   }
+  // }
+  //
+  // this.lastMediaIndex = mediaIndex;
+
+  if (this.lastMediaIndex === undefined) {
+      this.lastMediaIndex = 0;
   } else {
-    mediaIndex = this.playlists.getMediaIndexForTime_(this.tech_.currentTime());
+      this.lastMediaIndex++;
   }
 
-  console.log('mediaindex', mediaIndex, this.lastMediaIndex);
-
-  if (this.lastMediaIndex !== undefined) {
-    if (this.lastMediaIndex >= mediaIndex) {
-      mediaIndex = this.lastMediaIndex + 1;
-
-      if (mediaIndex + 1 > this.playlists.media().segments.length) {
-        mediaIndex = this.playlists.media().segments.length - 1;
-      }
-    }
-  }
-
-  this.lastMediaIndex = mediaIndex;
+  mediaIndex = this.lastMediaIndex;
 
   console.log('mediaindex', mediaIndex);
 
@@ -1803,9 +1814,10 @@ videojs.Hls.prototype.fillBuffer = function(seekToTime) {
 
   // if the video has finished downloading, stop trying to buffer
   if (!segment) {
+    this.lastMediaIndex--;
     return;
   }
-console.log(this.lastLoadSegmentUrl);
+// console.log(this.lastLoadSegmentUrl);
   if (this.lastLoadSegmentUrl) {
     while(this.lastLoadSegmentUrl.indexOf(segment.uri.split('.ts')[0]) >= 0) {
       mediaIndex++;
@@ -1845,7 +1857,6 @@ console.log(this.lastLoadSegmentUrl);
     // determined after it has been appended
     buffered: null
   };
-  console.log('开始下载ts', segmentInfo);
   this.loadSegment(segmentInfo);
 };
 
@@ -3608,14 +3619,14 @@ resolveUrl = videojs.Hls.resolveUrl = function(basePath, path) {
       // must have been inaccurate. Start a binary search for the
       // segment which contains `time`. If the guess turns out to be
       // incorrect, we'll have more info to work with next time.
-      if (segment.start !== undefined || segment.end !== undefined) {
-        return Math.floor((j - i) * 0.5);
-      }
+      // if (segment.start !== undefined || segment.end !== undefined) {
+      //   return Math.floor((j - i) * 0.5);
+      // }
     }
 
     // the playback position is outside the range of available
     // segments so return the length
-    return this.media_.segments.length;
+    return this.media_.segments.length-1;
   };
 
   videojs.Hls.PlaylistLoader = PlaylistLoader;

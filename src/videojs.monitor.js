@@ -9,6 +9,7 @@ function monitor(options) {
     player.on('playing', function () {
         if (player.hasStarted()) {
             console.timeEnd('播放期间缓冲');
+            console.log('播放期间缓冲', new Date());
         }
         console.timeEnd('用户可感知的视频第一次加载时间');
         console.timeEnd('切换分辨率到播放的耗时');

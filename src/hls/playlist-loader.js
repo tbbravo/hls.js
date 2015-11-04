@@ -81,7 +81,9 @@
       // }
 
       for(var i=offset; i>0; i--) {
-        original.push(update[update.length-i]);
+        if (update[update.length-i] !== undefined) {
+            original.push(update[update.length-i]);
+        }
       }
       return original;
     },
