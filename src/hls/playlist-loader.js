@@ -475,14 +475,14 @@
       // must have been inaccurate. Start a binary search for the
       // segment which contains `time`. If the guess turns out to be
       // incorrect, we'll have more info to work with next time.
-      if (segment.start !== undefined || segment.end !== undefined) {
-        return Math.floor((j - i) * 0.5);
-      }
+      // if (segment.start !== undefined || segment.end !== undefined) {
+      //   return Math.floor((j - i) * 0.5);
+      // }
     }
 
     // the playback position is outside the range of available
     // segments so return the length
-    return this.media_.segments.length;
+    return this.media_.segments.length-1;
   };
 
   videojs.Hls.PlaylistLoader = PlaylistLoader;

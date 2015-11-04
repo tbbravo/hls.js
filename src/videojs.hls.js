@@ -717,7 +717,8 @@ console.log(buffered.start(i), buffered.end(i), currentTime);
     _player.handleTechWaiting_();
   }
 
-  console.log('empty ranges', currentTime);
+  // console.log('empty ranges', currentTime, _player.hls.playlists.master.playlists[0].segments);
+
   // Return an empty range if no ranges exist
   ranges = videojs.createTimeRanges();
   ranges.indexOf = -1;
@@ -781,13 +782,26 @@ videojs.Hls.prototype.fillBuffer = function(seekToTime) {
     mediaIndex = this.playlists.getMediaIndexForTime_(this.tech_.currentTime());
   }
 
+  console.log('mediaindex', mediaIndex, this.lastMediaIndex);
+
+  /**
+   * hooke
+   * 不得已而为之
+   */
   if (this.lastMediaIndex !== undefined) {
-    if (this.lastMediaIndex === mediaIndex) {
-      mediaIndex++;
+    if (this.lastMediaIndex >= mediaIndex) {
+      mediaIndex = this.lastMediaIndex + 1;
+
+      if (mediaIndex + 1 > this.playlists.media().segments.length) {
+        mediaIndex = this.playlists.media().segments.length - 1;
+      }
+
     }
-  } else {
-    this.lastMediaIndex = mediaIndex;
   }
+
+  this.lastMediaIndex = mediaIndex;
+
+  console.log('mediaindex', mediaIndex);
 
   segment = this.playlists.media().segments[mediaIndex];
 
@@ -796,9 +810,9 @@ videojs.Hls.prototype.fillBuffer = function(seekToTime) {
   if (!segment) {
     return;
   }
-
+console.log(this.lastLoadSegmentUrl);
   if (this.lastLoadSegmentUrl) {
-    while(this.lastLoadSegmentUrl.indexOf(segment.uri.split('?room_id')[0]) >= 0) {
+    while(this.lastLoadSegmentUrl.indexOf(segment.uri.split('.ts')[0]) >= 0) {
       mediaIndex++;
       if (mediaIndex < this.playlists.media().segments.length){
         segment = this.playlists.media().segments[mediaIndex];
@@ -836,6 +850,7 @@ videojs.Hls.prototype.fillBuffer = function(seekToTime) {
     // determined after it has been appended
     buffered: null
   };
+  console.log('开始下载ts', segmentInfo);
   this.loadSegment(segmentInfo);
 };
 
@@ -868,8 +883,9 @@ videojs.Hls.prototype.setBandwidth = function(xhr) {
 };
 
 videojs.Hls.prototype.loadSegment = function(segmentInfo) {
-  var simpleUri = segmentInfo.uri.split('?room_id')[0];
-  simpleUri = simpleUri.split('http://tblivestream.baidu.com/live/')[1];
+  var simpleUri = segmentInfo.uri.split('.ts')[0];
+  // simpleUri = simpleUri.split('http://tblivestream.baidu.com/live/')[1];
+
   if (this.lastLoadSegmentUrl === undefined) {
     this.lastLoadSegmentUrl = [simpleUri];
   } else if (this.lastLoadSegmentUrl.indexOf(simpleUri) >=0 ) {
@@ -1032,8 +1048,7 @@ videojs.Hls.prototype.drainBuffer = function(event) {
     // If we aren't seeking and are crossing a discontinuity, we should set
     // timestampOffset for new segments to be appended the end of the current
     // buffered time-range
-    debugger;
-    console.log(segment);
+
     // this.sourceBuffer.timestampOffset = currentBuffered.end(0);
 
     /**
@@ -1680,14 +1695,14 @@ resolveUrl = videojs.Hls.resolveUrl = function(basePath, path) {
       });
       return;
     }
-    // match = (/^#EXT-X-DISCONTINUITY/).exec(line);
-    // if (match) {
-    //   this.trigger('data', {
-    //     type: 'tag',
-    //     tagType: 'discontinuity'
-    //   });
-    //   return;
-    // }
+    match = (/^#EXT-X-DISCONTINUITY/).exec(line);
+    if (match) {
+      this.trigger('data', {
+        type: 'tag',
+        tagType: 'discontinuity'
+      });
+      return;
+    }
     match = (/^#EXT-X-KEY:?(.*)$/).exec(line);
     if (match) {
       event = {
@@ -2598,14 +2613,14 @@ resolveUrl = videojs.Hls.resolveUrl = function(basePath, path) {
       // must have been inaccurate. Start a binary search for the
       // segment which contains `time`. If the guess turns out to be
       // incorrect, we'll have more info to work with next time.
-      if (segment.start !== undefined || segment.end !== undefined) {
-        return Math.floor((j - i) * 0.5);
-      }
+      // if (segment.start !== undefined || segment.end !== undefined) {
+      //   return Math.floor((j - i) * 0.5);
+      // }
     }
 
     // the playback position is outside the range of available
     // segments so return the length
-    return this.media_.segments.length;
+    return this.media_.segments.length-1;
   };
 
   videojs.Hls.PlaylistLoader = PlaylistLoader;
