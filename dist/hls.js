@@ -215,7 +215,7 @@ addTextTrackData = function (sourceHandler, captionArray, metadataArray) {
 
       // append muxed segments to their respective native buffers as
       // soon as they are available
-      this.transmuxer_ = new Worker(videojs.MediaSource.webWorkerURI || '/src/transmuxer_worker.js');
+      this.transmuxer_ = new Worker(videojs.MediaSource.webWorkerURI || './dist/transmuxer_worker.js');
 
       this.transmuxer_.onmessage = function (event) {
         if (event.data.action === 'data') {
@@ -3225,7 +3225,9 @@ resolveUrl = videojs.Hls.resolveUrl = function(basePath, path) {
       // }
 
       for(var i=offset; i>0; i--) {
-        original.push(update[update.length-i]);
+        if (update[update.length-i] !== undefined) {
+            original.push(update[update.length-i]);
+        }
       }
       return original;
     },

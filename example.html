@@ -6,92 +6,20 @@
     <meta name="renderer" content="webkit"/>
 
     <title>hls播放器</title>
+
     <link rel="stylesheet" href="http://apps.bdimg.com/libs/typo.css/2.0/typo.min.css">
     <link rel="stylesheet" href="/dist/hls.css">
-
     <style>
       html {
         background-color: #333;
       }
       .video-js {
-        outline: none;
-        -webkit-font-smoothing: antialiased;
         margin: 0 auto 0;
-      }
-
-      .video-js .vjs-big-play-button {
-        height: 3em;
-        border-radius: 50%;
-        left: 50%;
-        top: 50%;
-        margin-left: -1.5em;
-        margin-top: -1.5em;
-        background-color: #000;
-      }
-
-      .video-js .vjs-big-play-button:before {
-        top: -62px;
-        line-height: 3em;
-        font-size: 70px;
-      }
-
-      .video-js {
-        width: 768px;
-        height: 432px;
-      }
-
-      .video-js .vjs-progress-control, .video-js .vjs-remaining-time {
-        opacity: 0;
-      }
-      .vjs-watermark {
-        position: absolute;
-        display: inline;
-        z-index: 2000;
-      }
-
-      .video-js .vjs-control-bar {
-          background: transparent;
-          height: 40px;
-          line-height: 40px;
-          opacity: 1;
-          background-repeat: repeat-x;
-          -webkit-background-size: auto 101%;
-          -moz-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
-          -webkit-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
-          transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
-          bottom: 0;
-          background-image: url(./dist/bg.png);
-          background-position: bottom;
-          background-size: 100%;
-      }
-
-      .video-js .vjs-control:before {
-          font-size: 20px;
-          line-height: 40px;
-      }
-
-      .vjs-live-display:before {
-          display: inline-block;
-          width: 6px;
-          height: 6px;
-          margin-right: 5px;
-          background: #f12b24;
-          content: '';
-          border-radius: 6px;
-      }
-
-      .vjs-live-display {
-         line-height: 40px;
-         cursor: pointer;
-      }
-
-      .vjs-volume-menu-button, .vjs-volume-menu-button .vjs-menu-content {
-        overflow: hidden!important;
       }
     </style>
 </head>
 <body>
-  <video id="tb-video" class="video-js vjs-default-skin" width="640" height="360">
+  <video id="my-video" class="video-js vjs-default-skin" width="640" height="360">
     <source src="http://tblivestream.baidu.com/live/6d5dcff7a25d5e4238e079465dc62948.m3u8?room_id=5000009&sign=d16bfe62af4b26688fdc09ce8b434a0e&bduss=Mfby%2BrzLKp%2B9AnMHefb47Y8zdkhaRKBLEtm7IoqWDSdj9GRh1dlMdlo5rukqymkZMMIKIMpd2i4RGDUlvqOjloKh6iofXWe1uL%2BSAmnj7yip6%2BszxmOG6QKF%2FTi4pP55oh18KK4btl9dXvwFU8h4E2VejPVrmi253NmvSuujo7e1AHvQ6lhqJBv%2FjUzSw1UOesQhARDtOmRPzZEXUJ4nf4qrcKncWUCWgOeNF%2BUt8CbWj0czfd1vvBhnbpppNj5t" type="video/mp4">
   </video>
 
@@ -103,159 +31,35 @@
   <!--<![endif]-->
 
   <script>
-      var MSE = !!window.MediaSource; //ie9及其以下版本为true
+    var m3u8 = 'http://tblivestream.baidu.com/live/6d5dcff7a25d5e4238e079465dc62948.m3u8?room_id=5000009&sign=d16bfe62af4b26688fdc09ce8b434a0e&bduss=Mfby%2BrzLKp%2B9AnMHefb47Y8zdkhaRKBLEtm7IoqWDSdj9GRh1dlMdlo5rukqymkZMMIKIMpd2i4RGDUlvqOjloKh6iofXWe1uL%2BSAmnj7yip6%2BszxmOG6QKF%2FTi4pP55oh18KK4btl9dXvwFU8h4E2VejPVrmi253NmvSuujo7e1AHvQ6lhqJBv%2FjUzSw1UOesQhARDtOmRPzZEXUJ4nf4qrcKncWUCWgOeNF%2BUt8CbWj0czfd1vvBhnbpppNj5t';
+    var src = [{
+      src: m3u8,
+      label: '默认',
+      res: '默认',
+    }, {
+      src: m3u8,
+      label: '1080p',
+      res: '1080p',
+      'data-res': "HD",
+      'data-default': true
+    }, {
+      src: m3u8,
+      label: '720p',
+      res: '720p',
+      'data-res': "SD",
+    }, {
+      src: m3u8,
+      label: '480p',
+      res: '480p',
+    }, {
+      src: m3u8,
+      label: '200p',
+      res: '200p',
+    }];
 
-      if (MSE) {
-          videojs.options.flash.swf = "http://cdn.bootcss.com/video.js/5.0.0/video-js.swf";
-          videojs.MediaSource.webWorkerURI = './src/transmuxer_worker.js';
-      }
-      videojs.addLanguage('zh-CN', {
-        "Play": "播放",
-        "Pause": "暂停",
-        "Current Time": "当前时间",
-        "Duration Time": "时长",
-        "Remaining Time": "剩余时间",
-        "Stream Type": "媒体流类型",
-        "LIVE": "直播",
-        "Loaded": "加载完毕",
-        "Progress": "进度",
-        "Fullscreen": "全屏",
-        "Non-Fullscreen": "退出全屏",
-        "Mute": "静音",
-        "Unmuted": "取消静音",
-        "Playback Rate": "播放码率",
-        "Subtitles": "字幕",
-        "subtitles off": "字幕关闭",
-        "Captions": "内嵌字幕",
-        "captions off": "内嵌字幕关闭",
-        "Chapters": "节目段落",
-        "You aborted the media playback": "视频播放被终止",
-        "A network error caused the media download to fail part-way.": "网络错误导致视频下载中途失败。",
-        "The media could not be loaded, either because the server or network failed or because the format is not supported.": "视频因格式不支持或者服务器或网络的问题无法加载。",
-        "The media playback was aborted due to a corruption problem or because the media used features your browser did not support.": "由于视频文件损坏或是该视频使用了你的浏览器不支持的功能，播放终止。",
-        "No compatible source was found for this media.": "无法找到此视频兼容的源。",
-        "The media is encrypted and we do not have the keys to decrypt it.": "视频已加密，无法解密。"
-    });
-
-    var options = {
-      "preload": "auto", "controls": true
-    }
-
-    if (!MSE) {
-      videojs.options.flash.swf = "./src/video-js-bsie.swf";
-      options["techOrder"] = ["flash"];
-    }
-
-    var player = videojs('tb-video',
-        options,
-        function () {
-          player.autoplayToggle({namespace: 'videojs-autoplay'});
-
-          player.watermark({
-              file: 'http://tb2.bdstatic.com/tb/static-common/img/search_logo_big_282cef2.gif',
-              xpos: 100,
-              ypos: 0,
-              xrepeat: 0,
-              opacity: 0.5,
-              className: 'vjs-watermark'
-          });
-
-          player.errors();
-
-          player.hotkeys({
-            volumeStep: 0.1
-          });
-
-          $('.video-js').on('mouseleave', function () {
-              if ($('.vjs-resolution-button .vjs-menu').is(':hidden')) {
-                  player.userActive(false);
-              }
-          });
-
-          player.on('userinactive', function () {
-              $('.vjs-resolution-button .vjs-menu').hide();
-          });
-
-          $('.vjs-live-display').on('click', function () {
-            player.src({
-              src: player.getCache().src,
-              type: MSE ? 'application/x-mpegURL':'video/mp4'
-            });
-
-            if (MSE) {
-              player.play();
-            } else {
-              setTimeout(function () {
-                player.play();
-              }, 1000);
-            }
-          });
-
-          player.on('error', function (e) {
-              player.src({
-                src: player.getCache().src,
-                type: MSE ? 'application/x-mpegURL':'video/mp4'
-              });
-
-              if (MSE) {
-                player.play();
-              } else {
-                setTimeout(function () {
-                  player.play();
-                }, 1000);
-              }
-          });
-
-          player.on('ready', function () {
-            console.log('ready');
-          });
-
-          if (MSE) {
-            player.monitor();
-
-            player.videoJsResolutionSwitcher({
-              'default': 'high'
-            });
-
-            var src = 'http://tblivestream.baidu.com/live/6d5dcff7a25d5e4238e079465dc62948.m3u8?room_id=5000009&sign=d16bfe62af4b26688fdc09ce8b434a0e&bduss=Mfby%2BrzLKp%2B9AnMHefb47Y8zdkhaRKBLEtm7IoqWDSdj9GRh1dlMdlo5rukqymkZMMIKIMpd2i4RGDUlvqOjloKh6iofXWe1uL%2BSAmnj7yip6%2BszxmOG6QKF%2FTi4pP55oh18KK4btl9dXvwFU8h4E2VejPVrmi253NmvSuujo7e1AHvQ6lhqJBv%2FjUzSw1UOesQhARDtOmRPzZEXUJ4nf4qrcKncWUCWgOeNF%2BUt8CbWj0czfd1vvBhnbpppNj5t';
-
-            player.updateSrc([{
-              src: src,
-              label: '默认',
-              res: '默认',
-              type: 'application/x-mpegURL'
-            },{
-              src: src,
-              label: '1080p',
-              res: '1080p',
-              type: 'application/x-mpegURL',
-              'data-res': "HD",
-              'data-default': true
-            },{
-              src: src,
-              label: '720p',
-              res: '720p',
-              'data-res': "SD",
-              type: 'application/x-mpegURL'
-            },{
-              src: src,
-              label: '480p',
-              res: '480p',
-              type: 'application/x-mpegURL'
-            },{
-              src: src,
-              label: '200p',
-              res: '200p',
-              type: 'application/x-mpegURL'
-            }]);
-
-
-            $('.vjs-resolution-button').on('click', function () {
-              $('.vjs-resolution-button .vjs-menu').removeClass('.vjs-lock-showing').toggle();
-              $('.vjs-resolution-button-staticlabel').toggleClass('active');
-            });
-          }
-      });
-      </script>
+    var player = hls('my-video', {
+        src: 'http://tblivestream.baidu.com/live/6d5dcff7a25d5e4238e079465dc62948.m3u8?room_id=5000009&sign=d16bfe62af4b26688fdc09ce8b434a0e&bduss=Mfby%2BrzLKp%2B9AnMHefb47Y8zdkhaRKBLEtm7IoqWDSdj9GRh1dlMdlo5rukqymkZMMIKIMpd2i4RGDUlvqOjloKh6iofXWe1uL%2BSAmnj7yip6%2BszxmOG6QKF%2FTi4pP55oh18KK4btl9dXvwFU8h4E2VejPVrmi253NmvSuujo7e1AHvQ6lhqJBv%2FjUzSw1UOesQhARDtOmRPzZEXUJ4nf4qrcKncWUCWgOeNF%2BUt8CbWj0czfd1vvBhnbpppNj5t'
+    }, function () {});
+  </script>
 </body>
 </html>

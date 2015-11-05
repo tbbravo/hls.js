@@ -170,7 +170,6 @@
     };
 
     var turnOn = !storage.getItem(key);
-    console.log('turnOn', turnOn);
 
     player.me || (player.me = {});
 
@@ -191,7 +190,6 @@
       // }, 0)
 
       var startPlay = function () {
-        console.log('startPlay');
         var $playBtn = $('.vjs-big-play-button');
         if ($('.vjs-big-play-button').is(':visible')) {
           player.play();

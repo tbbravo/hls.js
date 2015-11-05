@@ -215,7 +215,7 @@ addTextTrackData = function (sourceHandler, captionArray, metadataArray) {
 
       // append muxed segments to their respective native buffers as
       // soon as they are available
-      this.transmuxer_ = new Worker(videojs.MediaSource.webWorkerURI || '/src/transmuxer_worker.js');
+      this.transmuxer_ = new Worker(videojs.MediaSource.webWorkerURI || './dist/transmuxer_worker.js');
 
       this.transmuxer_.onmessage = function (event) {
         if (event.data.action === 'data') {

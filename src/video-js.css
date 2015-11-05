@@ -501,8 +501,8 @@ about what's required to play video. */
   left: 0;
   right: 0;
   height: 3em;
-  background-color: #2B333F;
-  background-color: rgba(43, 51, 63, 0.7); }
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.7); }
 
 .vjs-has-started .vjs-control-bar {
   display: -webkit-box;
@@ -1229,3 +1229,75 @@ and the native poster can take over */
 .vjs-caption-settings input[type="button"] {
   width: 40px;
   height: 40px; }
+
+  /* custom */
+  .video-js {
+    outline: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .video-js .vjs-big-play-button {
+    height: 3em;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    margin-left: -1.5em;
+    margin-top: -1.5em;
+    background-color: #000;
+  }
+
+  .video-js .vjs-big-play-button:before {
+    top: -62px;
+    line-height: 3em;
+    font-size: 70px;
+  }
+
+  .video-js {
+    width: 768px;
+    height: 432px;
+  }
+
+  .video-js .vjs-progress-control, .video-js .vjs-remaining-time {
+    opacity: 0;
+  }
+  .vjs-watermark {
+    position: absolute;
+    display: inline;
+    z-index: 2000;
+  }
+
+  .video-js .vjs-control-bar {
+      height: 40px;
+      line-height: 40px;
+      opacity: 1;
+      background-repeat: repeat-x;
+      -webkit-background-size: auto 101%;
+      -moz-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+      -webkit-transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+      transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+      bottom: 0;
+  }
+
+  .video-js .vjs-control:before {
+      font-size: 20px;
+      line-height: 40px;
+  }
+
+  .vjs-live-display:before {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 5px;
+      background: #f12b24;
+      content: '';
+      border-radius: 6px;
+  }
+
+  .vjs-live-display {
+     line-height: 40px;
+     cursor: pointer;
+  }
+
+  .vjs-volume-menu-button, .vjs-volume-menu-button .vjs-menu-content {
+    overflow: hidden!important;
+  }
