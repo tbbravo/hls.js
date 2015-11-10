@@ -448,7 +448,7 @@ about what's required to play video. */
   height: 100%;
   width: auto;
   position: absolute;
-  left: 2.2222222em;
+  left: 45px;
   top: 0;
   padding: 0;
   margin: 0;
@@ -488,7 +488,8 @@ about what's required to play video. */
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
-    border-radius: 4px;padding: 7px 20px 7px 10px;
+    border-radius: 4px;
+    padding: 7px 4px;
     height: 40px;
     line-height: 1.1;
     font-size: 12px;}
@@ -773,7 +774,7 @@ specific time ranges that have been buffered */
   align-items: center; }
 
 .video-js .vjs-volume-bar {
-  margin: 1.35em; }
+  margin: 1.35em 0 1.35em 0;}
 
 .vjs-volume-bar.vjs-slider-horizontal {
   width: 50px;
@@ -1422,6 +1423,7 @@ and the native poster can take over */
   bottom: 0;
   background:rgba(0, 0, 0, .5);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000)"; /* IE8 */
+  /*background: #000;*/
 }
 
 /*
@@ -1430,7 +1432,6 @@ and the native poster can take over */
 */
 
 .vjs-errors-dialog {
-    border: 1px #999 solid;
     overflow: hidden;
     position: absolute;
     top: 5%;
@@ -1591,8 +1592,8 @@ and the native poster can take over */
   font-size: 12px;
   left: 50%;
   top: 50%;
-  margin-left: -75px;
-  margin-top: -110px;
+  margin-left: -110px;
+  margin-top: -75px;
 }
 
 .vjs-error-display .vjs-errors-headline {
@@ -1602,9 +1603,11 @@ and the native poster can take over */
 .vjs-error-display .vjs-errors-content-container {
   top: 0;
   width: 100%;
+  margin-top: 36px;
 }
 
 .vjs-error-display div {
+  bottom: inherit;
   position: relative;
   background: #000;
   font-size: 12px;

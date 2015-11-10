@@ -4,6 +4,7 @@ var server = require('gulp-devserver');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var watch  = require('gulp-watch');
+var minifyCss = require('gulp-minify-css');
 
 gulp.task('build', function() {
   // css
@@ -83,13 +84,36 @@ gulp.task('build', function() {
   gulp.src(['./src/video-js-bsie.swf'])
     .pipe(gulp.dest('./dist/'));
 
-  // gulp.src('./dist/hls.js')
-  //   .pipe(uglify())
-  //   .pipe(rename('hls.min.js'))
-  //   .pipe(gulp.dest('./dist/'));
+  gulp.src('./dist/hls.js')
+    .pipe(uglify())
+    .pipe(rename('hls.min.js'))
+    .pipe(gulp.dest('./dist/'));
+
+  gulp.src('./dist/video.js')
+    .pipe(uglify())
+    .pipe(rename('video.min.js'))
+    .pipe(gulp.dest('./dist/'));
+
+  gulp.src('./dist/mux.js')
+    .pipe(uglify())
+    .pipe(rename('mux.min.js'))
+    .pipe(gulp.dest('./dist/'));
+
+  gulp.src('./dist/hls.css')
+    .pipe(minifyCss())
+    .pipe(rename('hls.min.css'))
+      .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('watch', function () {
+  gulp.watch('./src/**', ['build']);
 });
 
 gulp.task('server', function () {
   gulp.src('./')
-    .pipe(server());
+    .pipe(server({
+      livereload: {
+        enable: false
+      }
+    }));
 });

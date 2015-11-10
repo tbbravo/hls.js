@@ -13,7 +13,7 @@
           options["techOrder"] = ["flash"];
       }
 
-      multiResolutions && (delete options.src);
+      // multiResolutions && (delete options.src);
 
       var player = videojs(videoId, options, callback);
 
@@ -46,15 +46,15 @@
       });
 
       player.autoplayToggle({namespace: 'videojs-autoplay'});
-
-      player.watermark({
-          file: 'http://tb2.bdstatic.com/tb/static-common/img/search_logo_big_282cef2.gif',
-          xpos: 100,
-          ypos: 0,
-          xrepeat: 0,
-          opacity: 0.5,
-          className: 'vjs-watermark'
-      });
+      
+      // player.watermark({
+      //     file: 'http://tb2.bdstatic.com/tb/static-common/img/search_logo_big_282cef2.gif',
+      //     xpos: 100,
+      //     ypos: 0,
+      //     xrepeat: 0,
+      //     opacity: 0.5,
+      //     className: 'vjs-watermark'
+      // });
 
       if (MSE) {
           player.monitor();
@@ -107,18 +107,23 @@
       });
 
       player.on('error', function (e) {
-          player.src({
-            src: player.getCache().src,
-            type: videoType
-          });
 
-          if (MSE) {
-            player.play();
-          } else {
-            setTimeout(function () {
-              player.play();
-            }, 1000);
-          }
+        console.log(e);
+        console.log(player.getCache().src);
+        
+
+          // player.src({
+          //   src: player.getCache().src,
+          //   type: videoType
+          // });
+
+          // if (MSE) {
+          //   player.play();
+          // } else {
+          //   setTimeout(function () {
+          //     player.play();
+          //   }, 1000);
+          // }
       });
 
       return player;

@@ -4,39 +4,39 @@
       header: '',
       code: '',
       message: '',
-      timeout: 45 * 1000,
+      timeout: 10 * 1000,
       errors: {
         1: {
-          type: 'MEDIA_ERR_ABORTED',
-          headline: 'The video download was cancelled'
+          type: 'MEDIA_ERR_ABORTED'
+          // headline: 'The video download was cancelled'
         },
         2: {
-          type: 'MEDIA_ERR_NETWORK',
-          headline: 'The video connection was lost, please confirm you are connected to the internet'
+          type: '网络异常，请稍后重试'
+          // headline: '网络异常'
         },
         3: {
-          type: 'MEDIA_ERR_DECODE',
-          headline: 'The video is bad or in a format that cannot be played on your browser'
+          type: 'MEDIA_ERR_DECODE'
+          // headline: 'The video is bad or in a format that cannot be played on your browser'
         },
         4: {
-          type: '网络错误',
-          headline: '请求视频流时出错'
+          type: '网络错误'
+          // headline: '请求视频流时出错'
         },
         5: {
-          type: 'MEDIA_ERR_ENCRYPTED',
-          headline: 'The video you are trying to watch is encrypted and we do not know how to decrypt it'
+          type: 'MEDIA_ERR_ENCRYPTED'
+          // headline: 'The video you are trying to watch is encrypted and we do not know how to decrypt it'
         },
         unknown: {
-          type: 'MEDIA_ERR_UNKNOWN',
-          headline: 'An unanticipated problem was encountered, check back soon and try again'
+          type: 'MEDIA_ERR_UNKNOWN'
+          // headline: 'An unanticipated problem was encountered, check back soon and try again'
         },
         '-1': {
-          type: 'PLAYER_ERR_NO_SRC',
-          headline: 'No video has been loaded'
+          type: 'PLAYER_ERR_NO_SRC'
+          // headline: 'No video has been loaded'
         },
         '-2': {
-          type: 'PLAYER_ERR_TIMEOUT',
-          headline: 'Could not download the video'
+          type: '出现错误了，请稍后重试' // PLAYER_ERR_TIMEOUT
+          // headline: 'Could not download the video'
         }
       }
     },
@@ -53,18 +53,18 @@
         // clears the previous monitor timeout and sets up a new one
         resetMonitor = function() {
           window.clearTimeout(monitor);
-          monitor = window.setTimeout(function() {
-            if (player.error() || player.paused() || player.ended()) {
-              // never overwrite existing errors or display a new one
-              // if the player is paused or ended.
-              return;
-            }
+          // monitor = window.setTimeout(function() {
+          //   if (player.error() || player.paused() || player.ended()) {
+          //     // never overwrite existing errors or display a new one
+          //     // if the player is paused or ended.
+          //     return;
+          //   }
 
-            player.error({
-              code: -2,
-              type: 'PLAYER_ERR_TIMEOUT'
-            });
-          }, settings.timeout);
+          //   player.error({
+          //     code: -2,
+          //     type: 'PLAYER_ERR_TIMEOUT'
+          //   });
+          // }, settings.timeout);
 
           // clear out any existing player timeout
           if (player.error() && player.error().code === -2) {
@@ -181,14 +181,14 @@
 
       display.el().innerHTML =
         '<div class="vjs-errors-dialog">' +
-          '<button class="vjs-errors-close-button"></button>' +
+          // '<button class="vjs-errors-close-button"></button>' +
           '<div class="vjs-errors-content-container">' +
-            '<h2 class="vjs-errors-headline">' + this.localize(error.headline) + '</h2>' +
+            // '<h2 class="vjs-errors-headline">' + this.localize(error.headline) + '</h2>' +
             '<div>' + (error.type || error.code) + '</div>' +
             // this.localize(details) +
           '</div>' +
           '<div class="vjs-errors-ok-button-container">' +
-            '<button class="vjs-errors-ok-button">' + this.localize('知道了') + '</button>' +
+            '<button class="vjs-errors-ok-button">' + this.localize('重试') + '</button>' +
           '</div>' +
         '</div>';
 
@@ -196,9 +196,10 @@
         display.addClass('vjs-xs');
       }
 
-      on(display.el().querySelector('.vjs-errors-close-button'), 'click', function() {
-        display.hide();
-      });
+      // on(display.el().querySelector('.vjs-errors-close-button'), 'click', function() {
+      //   display.hide();
+      // });
+
       on(display.el().querySelector('.vjs-errors-ok-button'), 'click', function() {
         display.hide();
       });

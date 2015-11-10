@@ -143,7 +143,7 @@
     var autoplayToggleButton = function (activate) {
 
       // set cookie once
-      activate ? storage.removeItem(key) : storage.setItem(key, 'no');
+      activate ? storage.setItem(key, 'yes') : storage.setItem(key, 'no');
 
       // get all videos and toggle all their autoplays
       var videos = document.querySelectorAll('.video-js');
@@ -169,7 +169,15 @@
       }
     };
 
-    var turnOn = !storage.getItem(key);
+    var lock = storage.getItem(key);
+
+    if (lock === 'yes') {
+        turnOn = true;
+    } else if (lock === 'no') {
+        turnOn = false;
+    } else if (lock === null) {
+        turnOn = player.autoplay();
+    }
 
     player.me || (player.me = {});
 
@@ -206,7 +214,7 @@
     // set up toggle click
     autoplayBtn.onclick = function () {
       // check if key in storage and do the opposite of that to toggle
-      var toggle = !!storage.getItem(key);
+      var toggle = storage.getItem(key) === 'yes' ? false:true;
       autoplayToggleButton(toggle);
     };
 

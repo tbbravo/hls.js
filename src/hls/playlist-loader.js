@@ -31,6 +31,7 @@
       i = master.playlists.length;
       while (i--) {
         playlist = result.playlists[i];
+        console.log('url ===', playlist.uri === media.uri);
         if (playlist.uri === media.uri) {
           // consider the playlist unchanged if the number of segments
           // are equal and the media sequence number is unchanged
@@ -38,6 +39,7 @@
               media.segments &&
               playlist.segments.length === media.segments.length &&
               playlist.mediaSequence === media.mediaSequence) {
+            console.log('updateMaster continue');
             continue;
           }
 
@@ -72,19 +74,49 @@
      * @return a list of merged segment objects
      */
     updateSegments = function(original, update, offset) {
-      var result = update.slice(), length, i;
-      offset = offset || 0;
-      length = Math.min(original.length, update.length + offset);
+      console.log(original, update, offset);
+      // var result = update.slice(), length, i;
+      // offset = offset || 0;
+      // length = Math.min(original.length, update.length + offset);
 
-      // for (i = offset; i < length; i++) {
-      //   result[i - offset] = mergeOptions(original[i], result[i - offset]);
+      // // for (i = offset; i < length; i++) {
+      // //   result[i - offset] = mergeOptions(original[i], result[i - offset]);
+      // // }
+
+      // for(var i=offset; i>0; i--) {
+      //   if (update[update.length-i] !== undefined) {
+      //       original.push(update[update.length-i]);
+      //   }
       // }
+        
+      /**
+       * hooke
+       * 以上写法会漏掉一些ts
+       */
+      var index = -1;
 
-      for(var i=offset; i>0; i--) {
-        if (update[update.length-i] !== undefined) {
-            original.push(update[update.length-i]);
-        }
+      for (var i=0, len = update.length; i < len; i++) {
+          var found = false;
+          
+          for (var j=original.length-1; j > 0; j--) {
+              if (update[i].uri === original[j].uri) {
+                  found = true;
+                  break;
+              }              
+          }
+
+          if (found === false) {
+              index = i;
+              break;
+          }
       }
+
+      if (index > -1) {
+          for (var i = index; i < update.length; i++) {
+              original.push(update[i]);
+          }     
+      }
+      
       return original;
     },
 

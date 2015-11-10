@@ -169,6 +169,7 @@ videojs.Hls.prototype.src = function(src) {
   }.bind(this));
 
   this.playlists.on('error', function() {
+    console.log('this.playlists.on(');
     // close the media source with the appropriate error type
     if (this.playlists.error.code === 2) {
       this.mediaSource.endOfStream('network');
@@ -702,7 +703,7 @@ videojs.Hls.prototype.findCurrentBuffered_ = function() {
         ranges = videojs.createTimeRanges(buffered.start(i), buffered.end(i));
         ranges.indexOf = i;
 
-        player.removeClass('vjs-waiting');
+        _player.removeClass('vjs-waiting');
         return ranges;
       }
     }
@@ -1074,8 +1075,13 @@ videojs.Hls.prototype.drainBuffer = function(event) {
   } else {
     this.sourceBuffer.appendWindowStart = 0;
   }
-  this.pendingSegment_.buffered = this.tech_.buffered();
+
+  if (this.pendingSegment_) {
+      this.pendingSegment_.buffered = this.tech_.buffered();  
+  }
+  
   // the segment is asynchronously added to the current buffered data
+  console.log('bytes', bytes.length);
   this.sourceBuffer.appendBuffer(bytes);
 };
 

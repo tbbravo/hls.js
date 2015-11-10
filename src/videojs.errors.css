@@ -19,6 +19,7 @@
   bottom: 0;
   background:rgba(0, 0, 0, .5);
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000)"; /* IE8 */
+  /*background: #000;*/
 }
 
 /*
@@ -27,7 +28,6 @@
 */
 
 .vjs-errors-dialog {
-    border: 1px #999 solid;
     overflow: hidden;
     position: absolute;
     top: 5%;
@@ -188,8 +188,8 @@
   font-size: 12px;
   left: 50%;
   top: 50%;
-  margin-left: -75px;
-  margin-top: -110px;
+  margin-left: -110px;
+  margin-top: -75px;
 }
 
 .vjs-error-display .vjs-errors-headline {
@@ -199,9 +199,11 @@
 .vjs-error-display .vjs-errors-content-container {
   top: 0;
   width: 100%;
+  margin-top: 36px;
 }
 
 .vjs-error-display div {
+  bottom: inherit;
   position: relative;
   background: #000;
   font-size: 12px;

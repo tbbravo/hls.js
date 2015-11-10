@@ -12839,11 +12839,11 @@ Player.prototype.options_ = {
   html5: {},
   flash: {},
 
-  // defaultVolume: 0.85,
-  defaultVolume: 0.00, // The freakin seaguls are driving me crazy!
+  defaultVolume: 0.85,
+  // defaultVolume: 0.00, // The freakin seaguls are driving me crazy!
 
   // default inactivity timeout
-  inactivityTimeout: 2000,
+  inactivityTimeout: 5000,
 
   // default playback rates
   playbackRates: [],
@@ -22204,7 +22204,7 @@ module.exports = exports['default'];
     var autoplayToggleButton = function (activate) {
 
       // set cookie once
-      activate ? storage.removeItem(key) : storage.setItem(key, 'no');
+      activate ? storage.setItem(key, 'yes') : storage.setItem(key, 'no');
 
       // get all videos and toggle all their autoplays
       var videos = document.querySelectorAll('.video-js');
@@ -22230,7 +22230,15 @@ module.exports = exports['default'];
       }
     };
 
-    var turnOn = !storage.getItem(key);
+    var lock = storage.getItem(key);
+
+    if (lock === 'yes') {
+        turnOn = true;
+    } else if (lock === 'no') {
+        turnOn = false;
+    } else if (lock === null) {
+        turnOn = player.autoplay();
+    }
 
     player.me || (player.me = {});
 
@@ -22267,7 +22275,7 @@ module.exports = exports['default'];
     // set up toggle click
     autoplayBtn.onclick = function () {
       // check if key in storage and do the opposite of that to toggle
-      var toggle = !!storage.getItem(key);
+      var toggle = storage.getItem(key) === 'yes' ? false:true;
       autoplayToggleButton(toggle);
     };
 
@@ -22414,39 +22422,39 @@ module.exports = exports['default'];
       header: '',
       code: '',
       message: '',
-      timeout: 45 * 1000,
+      timeout: 10 * 1000,
       errors: {
         1: {
-          type: 'MEDIA_ERR_ABORTED',
-          headline: 'The video download was cancelled'
+          type: 'MEDIA_ERR_ABORTED'
+          // headline: 'The video download was cancelled'
         },
         2: {
-          type: 'MEDIA_ERR_NETWORK',
-          headline: 'The video connection was lost, please confirm you are connected to the internet'
+          type: '网络异常，请稍后重试'
+          // headline: '网络异常'
         },
         3: {
-          type: 'MEDIA_ERR_DECODE',
-          headline: 'The video is bad or in a format that cannot be played on your browser'
+          type: 'MEDIA_ERR_DECODE'
+          // headline: 'The video is bad or in a format that cannot be played on your browser'
         },
         4: {
-          type: '网络错误',
-          headline: '请求视频流时出错'
+          type: '网络错误'
+          // headline: '请求视频流时出错'
         },
         5: {
-          type: 'MEDIA_ERR_ENCRYPTED',
-          headline: 'The video you are trying to watch is encrypted and we do not know how to decrypt it'
+          type: 'MEDIA_ERR_ENCRYPTED'
+          // headline: 'The video you are trying to watch is encrypted and we do not know how to decrypt it'
         },
         unknown: {
-          type: 'MEDIA_ERR_UNKNOWN',
-          headline: 'An unanticipated problem was encountered, check back soon and try again'
+          type: 'MEDIA_ERR_UNKNOWN'
+          // headline: 'An unanticipated problem was encountered, check back soon and try again'
         },
         '-1': {
-          type: 'PLAYER_ERR_NO_SRC',
-          headline: 'No video has been loaded'
+          type: 'PLAYER_ERR_NO_SRC'
+          // headline: 'No video has been loaded'
         },
         '-2': {
-          type: 'PLAYER_ERR_TIMEOUT',
-          headline: 'Could not download the video'
+          type: '出现错误了，请稍后重试' // PLAYER_ERR_TIMEOUT
+          // headline: 'Could not download the video'
         }
       }
     },
@@ -22463,18 +22471,18 @@ module.exports = exports['default'];
         // clears the previous monitor timeout and sets up a new one
         resetMonitor = function() {
           window.clearTimeout(monitor);
-          monitor = window.setTimeout(function() {
-            if (player.error() || player.paused() || player.ended()) {
-              // never overwrite existing errors or display a new one
-              // if the player is paused or ended.
-              return;
-            }
+          // monitor = window.setTimeout(function() {
+          //   if (player.error() || player.paused() || player.ended()) {
+          //     // never overwrite existing errors or display a new one
+          //     // if the player is paused or ended.
+          //     return;
+          //   }
 
-            player.error({
-              code: -2,
-              type: 'PLAYER_ERR_TIMEOUT'
-            });
-          }, settings.timeout);
+          //   player.error({
+          //     code: -2,
+          //     type: 'PLAYER_ERR_TIMEOUT'
+          //   });
+          // }, settings.timeout);
 
           // clear out any existing player timeout
           if (player.error() && player.error().code === -2) {
@@ -22591,14 +22599,14 @@ module.exports = exports['default'];
 
       display.el().innerHTML =
         '<div class="vjs-errors-dialog">' +
-          '<button class="vjs-errors-close-button"></button>' +
+          // '<button class="vjs-errors-close-button"></button>' +
           '<div class="vjs-errors-content-container">' +
-            '<h2 class="vjs-errors-headline">' + this.localize(error.headline) + '</h2>' +
+            // '<h2 class="vjs-errors-headline">' + this.localize(error.headline) + '</h2>' +
             '<div>' + (error.type || error.code) + '</div>' +
             // this.localize(details) +
           '</div>' +
           '<div class="vjs-errors-ok-button-container">' +
-            '<button class="vjs-errors-ok-button">' + this.localize('知道了') + '</button>' +
+            '<button class="vjs-errors-ok-button">' + this.localize('重试') + '</button>' +
           '</div>' +
         '</div>';
 
@@ -22606,9 +22614,10 @@ module.exports = exports['default'];
         display.addClass('vjs-xs');
       }
 
-      on(display.el().querySelector('.vjs-errors-close-button'), 'click', function() {
-        display.hide();
-      });
+      // on(display.el().querySelector('.vjs-errors-close-button'), 'click', function() {
+      //   display.hide();
+      // });
+
       on(display.el().querySelector('.vjs-errors-ok-button'), 'click', function() {
         display.hide();
       });
@@ -22618,6 +22627,7 @@ module.exports = exports['default'];
     initCustomErrorConditions(this, settings);
   });
 })();
+
 /*
  * Video.js Hotkeys
  * https://github.com/ctd1500/videojs-hotkeys
@@ -22942,21 +22952,52 @@ module.exports = exports['default'];
   videojs.plugin('hotkeys', hotkeys);
 });
 
+/**
+ * 计时器
+ * 用法和console.time()、console.timeEnd()类似
+ */
+window.videoMonitor = {};
+
+videoMonitor.db = {};
+
+videoMonitor.time = function (key) {
+    videoMonitor.db[key] = {};
+    videoMonitor.db[key].startTime = new Date();
+    return videoMonitor.db[key].startTime;
+}
+
+videoMonitor.timeEnd = function (key) {
+    var debug = (location.search.indexOf('debug') >= 0) ? true : false;
+    var timer = videoMonitor.db[key];
+
+    if (!timer || timer.used) {
+        return;
+    }
+
+    timer.endTime = new Date();
+    timer.costTime = timer.endTime - timer.startTime;
+    if (debug) {
+        console.log(key, timer.costTime);
+    }
+    timer.used = true;
+    return timer.costTime;
+}
+
 function monitor(options) {
     var player = this;
 
     // 视频监控
     player.on('waiting', function () {
-        console.time('播放期间缓冲');
+        videoMonitor.time('播放期间缓冲');
     });
 
     player.on('playing', function () {
         if (player.hasStarted()) {
-            console.timeEnd('播放期间缓冲');
+            videoMonitor.timeEnd('播放期间缓冲');
             console.log('播放期间缓冲', new Date());
         }
-        console.timeEnd('用户可感知的视频第一次加载时间');
-        console.timeEnd('切换分辨率到播放的耗时');
+        videoMonitor.timeEnd('用户可感知的视频第一次加载时间');
+        videoMonitor.timeEnd('切换分辨率到播放的耗时');
     });
 
     player.on('buffering', function () {
@@ -22970,7 +23011,7 @@ function monitor(options) {
 
     player.on('resolutionchangebefore', function () {
         console.info('切换分辨率');
-        console.time('切换分辨率到播放的耗时');
+        videoMonitor.time('切换分辨率到播放的耗时');
     });
 
     // player.on('error', function (e) {
@@ -22991,13 +23032,13 @@ function monitor(options) {
 
     $('.vjs-big-play-button').on('click', function () {
         if (!player.me.autoplay) {
-            console.time('用户可感知的视频第一次加载时间');
+            videoMonitor.time('用户可感知的视频第一次加载时间');
         }
     });
 
     player.on('ready', function () {
         if (player.me.autoplay) {
-            console.time('用户可感知的视频第一次加载时间');
+            videoMonitor.time('用户可感知的视频第一次加载时间');
         }
     });
 };
@@ -23019,7 +23060,7 @@ videojs.plugin('monitor', monitor);
           options["techOrder"] = ["flash"];
       }
 
-      multiResolutions && (delete options.src);
+      // multiResolutions && (delete options.src);
 
       var player = videojs(videoId, options, callback);
 
@@ -23052,15 +23093,15 @@ videojs.plugin('monitor', monitor);
       });
 
       player.autoplayToggle({namespace: 'videojs-autoplay'});
-
-      player.watermark({
-          file: 'http://tb2.bdstatic.com/tb/static-common/img/search_logo_big_282cef2.gif',
-          xpos: 100,
-          ypos: 0,
-          xrepeat: 0,
-          opacity: 0.5,
-          className: 'vjs-watermark'
-      });
+      
+      // player.watermark({
+      //     file: 'http://tb2.bdstatic.com/tb/static-common/img/search_logo_big_282cef2.gif',
+      //     xpos: 100,
+      //     ypos: 0,
+      //     xrepeat: 0,
+      //     opacity: 0.5,
+      //     className: 'vjs-watermark'
+      // });
 
       if (MSE) {
           player.monitor();
@@ -23113,18 +23154,23 @@ videojs.plugin('monitor', monitor);
       });
 
       player.on('error', function (e) {
-          player.src({
-            src: player.getCache().src,
-            type: videoType
-          });
 
-          if (MSE) {
-            player.play();
-          } else {
-            setTimeout(function () {
-              player.play();
-            }, 1000);
-          }
+        console.log(e);
+        console.log(player.getCache().src);
+        
+
+          // player.src({
+          //   src: player.getCache().src,
+          //   type: videoType
+          // });
+
+          // if (MSE) {
+          //   player.play();
+          // } else {
+          //   setTimeout(function () {
+          //     player.play();
+          //   }, 1000);
+          // }
       });
 
       return player;
