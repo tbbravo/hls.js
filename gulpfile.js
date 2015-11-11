@@ -81,7 +81,7 @@ gulp.task('build', function() {
     .pipe(concat('hls.js'))
     .pipe(gulp.dest('./dist/'));
 
-  gulp.src(['./src/video-js-bsie.swf'])
+  gulp.src(['./src/video-js-bsie.swf', './src/oval.svg'])
     .pipe(gulp.dest('./dist/'));
 
   gulp.src('./dist/hls.js')
@@ -117,3 +117,5 @@ gulp.task('server', function () {
       }
     }));
 });
+
+gulp.task('default', ['server', 'watch']);

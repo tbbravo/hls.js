@@ -87,6 +87,8 @@
           }
       });
 
+      $('.vjs-loading-spinner').trigger('click');
+
       player.on('userinactive', function () {
           $('.vjs-resolution-button .vjs-menu').hide();
       });

@@ -3248,7 +3248,7 @@ resolveUrl = videojs.Hls.resolveUrl = function(basePath, path) {
       for (var i=0, len = update.length; i < len; i++) {
           var found = false;
           
-          for (var j=0, oLen = original.length; j < oLen; j++) {
+          for (var j=original.length-1; j > 0; j--) {
               if (update[i].uri === original[j].uri) {
                   found = true;
                   break;
