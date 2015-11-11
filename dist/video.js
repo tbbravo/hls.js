@@ -14573,7 +14573,6 @@ var Html5 = (function (_Tech) {
    */
 
   Html5.prototype.play = function play() {
-    console.log('videojs play');
     this.el_.play();
   };
 
