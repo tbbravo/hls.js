@@ -7522,21 +7522,21 @@ var LoadingSpinner = (function (_Component) {
    * @method createEl
    */
 
-  var loading = ['<svg width="60" height="60" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff">',
-        '<g fill="none" fill-rule="evenodd">',
-            '<g transform="translate(1 1)" stroke-width="2">',
-                '<circle stroke-opacity=".5" cx="18" cy="18" r="18"/>',
-                '<path d="M36 18c0-9.94-8.06-18-18-18">',
-                    '<animateTransform attributeName="transform" begin="indefinite" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"/>',
-                '</path>',
-            '</g>',
-        '</g>',
-    '</svg>'].join('');
+  // var loading = ['<svg width="60" height="60" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff">',
+  //       '<g fill="none" fill-rule="evenodd">',
+  //           '<g transform="translate(1 1)" stroke-width="2">',
+  //               '<circle stroke-opacity=".5" cx="18" cy="18" r="18"/>',
+  //               '<path d="M36 18c0-9.94-8.06-18-18-18">',
+  //                   '<animateTransform attributeName="transform" begin="indefinite" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"/>',
+  //               '</path>',
+  //           '</g>',
+  //       '</g>',
+  //   '</svg>'].join('');
 
   LoadingSpinner.prototype.createEl = function createEl() {
     return _Component.prototype.createEl.call(this, 'div', {
-      className: 'vjs-loading-spinner',
-      innerHTML: loading
+      className: 'vjs-loading-spinner'
+      // innerHTML: loading
     });
   };
 
@@ -12597,7 +12597,6 @@ var Html5 = (function (_Tech) {
    */
 
   Html5.prototype.play = function play() {
-    console.log('videojs play');
     this.el_.play();
   };
 

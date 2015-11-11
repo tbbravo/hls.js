@@ -60,7 +60,7 @@
           player.monitor();
       }
 
-      if (MSE && multiResolutions) {
+      // if (MSE && multiResolutions) {
           player.videoJsResolutionSwitcher({
             'default': 'high'
           });
@@ -75,7 +75,7 @@
               $('.vjs-resolution-button .vjs-menu').removeClass('.vjs-lock-showing').toggle();
               $('.vjs-resolution-button-staticlabel').toggleClass('active');
           });
-      }
+      // }
 
       player.errors();
 

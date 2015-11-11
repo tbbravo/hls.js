@@ -62,8 +62,14 @@
     }));
 
     if (player.hasStarted()) {
-      player.hls.setupFirstPlay()
-      player.play();
+      if (player.hls) {
+        player.hls.setupFirstPlay();
+        player.play();
+      } else {
+        setTimeout(function () {
+          player.play();
+        }, 1000);        
+      }
     }
 
     return player;
@@ -151,7 +157,7 @@
         this.el().appendChild(label);
       }else{
         var staticLabel = document.createElement('span');
-        staticLabel.classList.add('vjs-resolution-button-staticlabel');
+        staticLabel.className = staticLabel.className + ' vjs-resolution-button-staticlabel';
         this.el().appendChild(staticLabel);
       }
      },
@@ -213,7 +219,7 @@
       var groupedSrc = bucketSources(src);
       var choosen = chooseSrc(groupedSrc, src);
       var menuButton = new ResolutionMenuButton(player, { sources: groupedSrc, initialySelectedLabel: choosen.label , initialySelectedRes: choosen.res}, settings, label);
-      menuButton.el().classList.add('vjs-resolution-button');
+      menuButton.el().className = menuButton.el().className + ' vjs-resolution-button';
       player.controlBar.resolutionSwitcher = player.controlBar.addChild(menuButton);
       return setSourcesSanitized(player, choosen.sources);
     };

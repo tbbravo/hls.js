@@ -60,13 +60,13 @@ function monitor(options) {
         videoMonitor.time('切换分辨率到播放的耗时');
     });
 
-    // player.on('error', function (e) {
-    //     player.src({
-    //         src: player.getCache().src,
-    //         type: 'application/x-mpegURL'
-    //     });
-    //     player.play();
-    // });
+    player.on('error', function (e) {
+        player.src({
+            src: player.getCache().src,
+            type: 'application/x-mpegURL'
+        });
+        player.play();
+    });
 
     player.on('fullscreenchange', function (e) {
         console.info('全屏状态切换');

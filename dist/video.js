@@ -9498,21 +9498,21 @@ var LoadingSpinner = (function (_Component) {
    * @method createEl
    */
 
-  var loading = ['<svg width="60" height="60" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff">',
-        '<g fill="none" fill-rule="evenodd">',
-            '<g transform="translate(1 1)" stroke-width="2">',
-                '<circle stroke-opacity=".5" cx="18" cy="18" r="18"/>',
-                '<path d="M36 18c0-9.94-8.06-18-18-18">',
-                    '<animateTransform attributeName="transform" begin="indefinite" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"/>',
-                '</path>',
-            '</g>',
-        '</g>',
-    '</svg>'].join('');
+  // var loading = ['<svg width="60" height="60" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff">',
+  //       '<g fill="none" fill-rule="evenodd">',
+  //           '<g transform="translate(1 1)" stroke-width="2">',
+  //               '<circle stroke-opacity=".5" cx="18" cy="18" r="18"/>',
+  //               '<path d="M36 18c0-9.94-8.06-18-18-18">',
+  //                   '<animateTransform attributeName="transform" begin="indefinite" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"/>',
+  //               '</path>',
+  //           '</g>',
+  //       '</g>',
+  //   '</svg>'].join('');
 
   LoadingSpinner.prototype.createEl = function createEl() {
     return _Component.prototype.createEl.call(this, 'div', {
-      className: 'vjs-loading-spinner',
-      innerHTML: loading
+      className: 'vjs-loading-spinner'
+      // innerHTML: loading
     });
   };
 
@@ -21709,8 +21709,14 @@ module.exports = exports['default'];
     }));
 
     if (player.hasStarted()) {
-      player.hls.setupFirstPlay()
-      player.play();
+      if (player.hls) {
+        player.hls.setupFirstPlay();
+        player.play();
+      } else {
+        setTimeout(function () {
+          player.play();
+        }, 1000);        
+      }
     }
 
     return player;
@@ -21798,7 +21804,7 @@ module.exports = exports['default'];
         this.el().appendChild(label);
       }else{
         var staticLabel = document.createElement('span');
-        staticLabel.classList.add('vjs-resolution-button-staticlabel');
+        staticLabel.className = staticLabel.className + ' vjs-resolution-button-staticlabel';
         this.el().appendChild(staticLabel);
       }
      },
@@ -21860,7 +21866,7 @@ module.exports = exports['default'];
       var groupedSrc = bucketSources(src);
       var choosen = chooseSrc(groupedSrc, src);
       var menuButton = new ResolutionMenuButton(player, { sources: groupedSrc, initialySelectedLabel: choosen.label , initialySelectedRes: choosen.res}, settings, label);
-      menuButton.el().classList.add('vjs-resolution-button');
+      menuButton.el().className = menuButton.el().className + ' vjs-resolution-button';
       player.controlBar.resolutionSwitcher = player.controlBar.addChild(menuButton);
       return setSourcesSanitized(player, choosen.sources);
     };
@@ -23026,13 +23032,13 @@ function monitor(options) {
         videoMonitor.time('切换分辨率到播放的耗时');
     });
 
-    // player.on('error', function (e) {
-    //     player.src({
-    //         src: player.getCache().src,
-    //         type: 'application/x-mpegURL'
-    //     });
-    //     player.play();
-    // });
+    player.on('error', function (e) {
+        player.src({
+            src: player.getCache().src,
+            type: 'application/x-mpegURL'
+        });
+        player.play();
+    });
 
     player.on('fullscreenchange', function (e) {
         console.info('全屏状态切换');
@@ -23119,7 +23125,7 @@ videojs.plugin('monitor', monitor);
           player.monitor();
       }
 
-      if (MSE && multiResolutions) {
+      // if (MSE && multiResolutions) {
           player.videoJsResolutionSwitcher({
             'default': 'high'
           });
@@ -23134,7 +23140,7 @@ videojs.plugin('monitor', monitor);
               $('.vjs-resolution-button .vjs-menu').removeClass('.vjs-lock-showing').toggle();
               $('.vjs-resolution-button-staticlabel').toggleClass('active');
           });
-      }
+      // }
 
       player.errors();
 

@@ -31,7 +31,6 @@
       i = master.playlists.length;
       while (i--) {
         playlist = result.playlists[i];
-        console.log('url ===', playlist.uri === media.uri);
         if (playlist.uri === media.uri) {
           // consider the playlist unchanged if the number of segments
           // are equal and the media sequence number is unchanged
@@ -39,7 +38,6 @@
               media.segments &&
               playlist.segments.length === media.segments.length &&
               playlist.mediaSequence === media.mediaSequence) {
-            console.log('updateMaster continue');
             continue;
           }
 
@@ -74,7 +72,6 @@
      * @return a list of merged segment objects
      */
     updateSegments = function(original, update, offset) {
-      console.log(original, update, offset);
       // var result = update.slice(), length, i;
       // offset = offset || 0;
       // length = Math.min(original.length, update.length + offset);
@@ -152,7 +149,6 @@
             code: (xhr.status >= 500) ? 4 : 2
           };
           // playlist.play();
-          console.log('error', error, xhr);
           return loader.trigger('error');
         }
 
